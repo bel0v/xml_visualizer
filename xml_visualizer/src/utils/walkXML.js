@@ -1,3 +1,6 @@
+import uuid from 'uuid/v4'
+import { resolve } from 'q'
+
 // function readXml(xmlFile) {
 //   xmlhttp = new XMLHttpRequest()
 //   xmlhttp.open('GET', xmlFile, false)
@@ -12,19 +15,22 @@
 function bfs(node, maxLevel, nodeCallback) {
   const queue = []
   node.level = 0
+  node.id = uuid()
+
   while (node) {
     nodeCallback(node)
     if (node.level < maxLevel) {
       ;[...node.children].forEach(child => {
         child.level = node.level + 1
+        child.id = uuid()
         queue.push(child)
       })
     }
     node = queue.shift()
   }
+  return Promise.resolve()
 }
 
-export function walkXml(doc, nodeCallback) {
-  const maxLevel = 2
+export function walkXMl(doc, maxLevel = 10, nodeCallback) {
   bfs(doc, maxLevel, nodeCallback)
 }

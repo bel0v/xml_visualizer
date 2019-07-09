@@ -7,7 +7,10 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "uuid": "^3.3.2",
+    "vis": "^4.21.0",
+    "vis-react": "^0.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
