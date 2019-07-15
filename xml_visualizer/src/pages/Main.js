@@ -90,7 +90,7 @@ export class MainPage extends Component {
           value={depth}
           onChange={this.onDepthChange}
         />
-        <label for="depth">Глубина: {depth}</label>
+        <label htmlFor="depth">Глубина: {depth}</label>
         <GraphWrapper>
           <Graph
             graph={{ nodes, edges }}

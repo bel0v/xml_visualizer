@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4'
 import { resolve } from 'q'
+/* eslint-disable no-loop-func */
 
 // function readXml(xmlFile) {
 //   xmlhttp = new XMLHttpRequest()
