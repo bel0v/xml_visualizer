@@ -6,11 +6,14 @@
     "@rebass/grid": "^6.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
     "react-scripts": "3.0.1",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^4.3.2",
     "uuid": "^3.3.2",
-    "vis": "^4.21.0",
-    "vis-react": "^0.4.5"
+    "vis-react": "^0.4.5",
+    "visjs-network": "^4.24.10"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -4,21 +4,9 @@ import Graph from 'vis-react'
 import { Box } from '@rebass/grid'
 import styled from 'styled-components'
 import { loadFile, walkXMl } from 'utils'
-
-const StoredGraph = () => {
-  let nodes = []
-  let edges = []
-  function addNode(node) {
-    const parentEdge = node.parentNode ? [{ from: node.parentNode.id, to: node.id }] : []
-    nodes = [...nodes, { id: node.id, label: node.nodeName, level: node.level }]
-    edges = [...edges, ...parentEdge]
-  }
-  return {
-    addNode,
-    getNodes: () => nodes,
-    getEdges: () => edges
-  }
-}
+import { connect } from 'react-redux'
+import * as actions from 'data/actions'
+import { Graph as GraphModel } from 'data/models/Graph'
 
 var options = {
   edges: {
@@ -40,25 +28,26 @@ const GraphWrapper = styled(Box)`
   height: 100vh;
 `
 
-export class MainPage extends Component {
-  graph = StoredGraph()
+class MainPage extends Component {
   state = {
     network: null,
-    nodes: [],
-    edges: [],
     depth: 10
   }
 
   onFileLoad = e => {
+    const { dispatch } = this.props
+    dispatch(actions.loadFileStart())
+    const graph = GraphModel()
     const { depth } = this.state
-    const file = loadFile(e)
-      .then(doc => walkXMl(doc, depth, this.graph.addNode))
-      .then(() =>
-        this.setState({
-          nodes: this.graph.getNodes(),
-          edges: this.graph.getEdges()
-        })
-      )
+    loadFile(e)
+      .then(doc => {
+        dispatch(actions.loadFileSuccess(doc))
+        dispatch(actions.buildGraphStart())
+        walkXMl(doc, depth, graph.addNode)
+      })
+      .then(() => {
+        dispatch(actions.buildGraphSuccess(graph))
+      })
   }
 
   getNetwork = network => {
@@ -68,15 +57,21 @@ export class MainPage extends Component {
   onDepthChange = e => {
     const depth = e.target.value
     this.setState({ depth })
-    this.setState({
-      nodes: this.graph.getNodes().filter(node => {
-        return node.level <= depth
+    if (this.props.graph) {
+      // todo: set depth in model presenter
+      this.setState({
+        nodes: this.graph.getNodes().filter(node => {
+          return node.level <= depth
+        })
       })
-    })
+    }
   }
 
   render() {
-    const { nodes, edges, depth } = this.state
+    const { depth } = this.state
+    const { graph = {} } = this.props
+    const nodes = graph.getNodes()
+    const edges = graph.getEdges()
     return (
       <>
         {/* <Menu /> */}
@@ -104,3 +99,6 @@ export class MainPage extends Component {
     )
   }
 }
+
+const ConnectedMainPage = connect(state => ({ graph: state.graph }))(MainPage)
+export { ConnectedMainPage as MainPage }
