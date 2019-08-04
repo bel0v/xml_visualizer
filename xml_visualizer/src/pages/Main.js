@@ -67,6 +67,11 @@ class MainPage extends Component {
     }
   }
 
+  onReset = () => {
+    this.props.dispatch(actions.resetAll())
+    this.fileInput.value = ''
+  }
+
   render() {
     const { depth } = this.state
     const { graph = {} } = this.props
@@ -75,7 +80,10 @@ class MainPage extends Component {
     return (
       <>
         {/* <Menu /> */}
-        <input type="file" onChange={this.onFileLoad} />
+        <input type="file" onChange={this.onFileLoad} ref={node => (this.fileInput = node)} />
+        <button type="button" onClick={this.onReset}>
+          Сброс
+        </button>
         <input
           type="range"
           id="start"

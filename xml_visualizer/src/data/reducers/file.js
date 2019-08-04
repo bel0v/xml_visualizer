@@ -10,6 +10,8 @@ export default (state = {}, action) => {
       return {
         result: action.payload
       }
+    case types.RESET_FILE:
+      return {}
     default:
       return state
   }
