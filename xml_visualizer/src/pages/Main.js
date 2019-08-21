@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Menu } from 'components'
-import Graph from 'vis-react'
+import { Menu, GraphRender } from 'components'
+import vis from 'visjs-network'
 import { Box } from '@rebass/grid'
 import styled from 'styled-components'
 import { loadFile, walkXMl } from 'utils'
@@ -8,21 +8,33 @@ import { connect } from 'react-redux'
 import * as actions from 'data/actions'
 import { Graph as GraphModel } from 'data/models/Graph'
 
-var options = {
-  edges: {
-    color: '#000000'
-  }
-  // layout: {
-  //   hierarchical: true
-  // }
+const options = {
+   physics: {
+     stabilization: { enabled: false },
+   },
+  //  layout: {
+  //    hierarchical: {
+  //      enabled: true,
+  //      levelSeparation: 300,
+  //    }
+  //  }
 }
 
-var events = {
-  select: function(event) {
-    var { nodes, edges } = event
-    console.log({ nodes, edges })
+const events = {
+  startStabilizing: function() {
+    console.log('started')
+  },
+  stabilizationProgress: function(params) { // only in hidden render
+    console.log('progress:', params)
+  },
+  stabilizationIterationsDone: function() { // only in hidden render
+    console.log('finished stabilization interations')
+  },
+  stabilized: function() {
+    console.log('stabilized')
   }
 }
+
 
 const GraphWrapper = styled(Box)`
   height: 100vh;
@@ -74,9 +86,7 @@ class MainPage extends Component {
 
   render() {
     const { depth } = this.state
-    const { graph = {} } = this.props
-    const nodes = graph.getNodes()
-    const edges = graph.getEdges()
+    const { graph } = this.props
     return (
       <>
         {/* <Menu /> */}
@@ -95,13 +105,7 @@ class MainPage extends Component {
         />
         <label htmlFor="depth">Глубина: {depth}</label>
         <GraphWrapper>
-          <Graph
-            graph={{ nodes, edges }}
-            options={options}
-            events={events}
-            getNetwork={this.getNetwork}
-            vis={vis => (this.vis = vis)}
-          />
+          <GraphRender graph={graph} options={options} events={events} />
         </GraphWrapper>
       </>
     )
