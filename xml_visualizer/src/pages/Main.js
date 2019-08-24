@@ -1,13 +1,11 @@
 import React, { Component, useState } from 'react'
-import { Menu, GraphRender } from 'components'
-import vis from 'visjs-network'
+import { Menu, GraphRender, NodesSettings } from 'components'
 import { Box } from '@rebass/grid'
 import styled from 'styled-components'
 import { loadFile, walkXMl } from 'utils'
 import { connect } from 'react-redux'
 import * as actions from 'data/actions'
 import { Graph as GraphModel } from 'data/models/Graph'
-
 const options = {
   physics: {
     stabilization: { enabled: false },
@@ -17,12 +15,6 @@ const options = {
       type: 'continuous',
     },
   },
-  //  layout: {
-  //    hierarchical: {
-  //      enabled: true,
-  //      levelSeparation: 300,
-  //    }
-  //  }
 }
 
 const events = {
@@ -71,16 +63,11 @@ const DepthFilter = ({ graph }) => {
 }
 
 class MainPage extends Component {
-  state = {
-    network: null,
-    depth: 20,
-  }
-
   onFileLoad = (e) => {
     const { dispatch } = this.props
     dispatch(actions.loadFileStart())
     const graph = GraphModel()
-    const { depth } = this.state
+    const { depth } = graph
     loadFile(e)
       .then((doc) => {
         dispatch(actions.loadFileSuccess(doc))
@@ -90,10 +77,6 @@ class MainPage extends Component {
       .then(() => {
         dispatch(actions.buildGraphSuccess(graph))
       })
-  }
-
-  getNetwork = (network) => {
-    this.setState({ network })
   }
 
   onReset = () => {
@@ -115,6 +98,7 @@ class MainPage extends Component {
           Сброс
         </button>
         <DepthFilter graph={graph} />
+        <NodesSettings />
         <GraphWrapper>
           <GraphRender graph={graph} options={options} events={events} />
         </GraphWrapper>
@@ -123,5 +107,7 @@ class MainPage extends Component {
   }
 }
 
-const ConnectedMainPage = connect((state) => ({ graph: state.graph }))(MainPage)
+const ConnectedMainPage = connect((state) => ({ graph: state.graph.model }))(
+  MainPage
+)
 export { ConnectedMainPage as MainPage }

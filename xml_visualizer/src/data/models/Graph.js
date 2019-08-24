@@ -20,6 +20,14 @@ export const Graph = () => {
       edges.add([parentEdge])
     }
   }
+  function groupNodes({filter = () => true, groupName}) {
+    const addGroup = (node) => {
+      const name = (typeof groupName === "function") ? groupName(node) : groupName
+      return {...node, group: name}
+    }
+    const affectedNodes = nodes.get({filter}).map(addGroup)
+    nodes.update(affectedNodes)
+  }
   function cleanUp() {
     nodes.clear()
     edges.clear()
@@ -27,6 +35,7 @@ export const Graph = () => {
   return {
     addNode,
     cleanUp,
+    groupNodes,
     get network() {
       return network
     },

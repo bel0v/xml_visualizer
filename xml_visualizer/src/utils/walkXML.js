@@ -15,7 +15,7 @@ import { resolve } from 'q'
 
 function bfs(node, maxLevel, nodeCallback) {
   const queue = []
-  node.level = 0
+  node.level = 1
   node.id = uuid()
 
   while (node) {
