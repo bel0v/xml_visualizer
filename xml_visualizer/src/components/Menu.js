@@ -1,15 +1,15 @@
 import React from 'react'
-import { Flex } from '@rebass/grid'
+import { Box } from '@rebass/grid'
 import styled from 'styled-components'
 
-const MenuBar = styled(Flex)`
-  background: #8bc34a;
+const MenuBar = styled(Box)`
+  background: #ffc10730;
 `
 
-export const Menu = () => {
+export const Menu = ({children, ...props}) => {
   return (
-    <MenuBar as="header" px="1rem" py="0.5rem">
-      Menu
+    <MenuBar as="menu" p="1rem" m='0' {...props}>
+      {children}
     </MenuBar>
   )
 }

@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react'
 import { Menu, GraphRender, NodesSettings } from 'components'
-import { Box } from '@rebass/grid'
+import { Box, Flex } from '@rebass/grid'
 import styled from 'styled-components'
 import { loadFile, walkXMl } from 'utils'
 import { connect } from 'react-redux'
@@ -17,7 +17,7 @@ const options = {
     arrows: 'to',
   },
   interaction: {
-    hideEdgesOnDrag: true,
+    hideEdgesOnDrag: false,
   },
 }
 
@@ -38,8 +38,13 @@ const events = {
   },
 }
 
+
 const GraphWrapper = styled(Box)`
   height: 100vh;
+  width: 100%;
+`
+const MenuItem = styled(Box)`
+  margin-bottom: 1.5rem;
 `
 
 const DepthFilter = ({ graph }) => {
@@ -67,19 +72,20 @@ const DepthFilter = ({ graph }) => {
 }
 
 class MainPage extends Component {
+
   onFileLoad = (e) => {
-    const { dispatch } = this.props
+    const { dispatch, graph } = this.props
     dispatch(actions.loadFileStart())
-    const graph = GraphModel()
-    const { depth } = graph
+
+    const newGraph = GraphModel({depth: graph.depth})
     loadFile(e)
       .then((doc) => {
         dispatch(actions.loadFileSuccess(doc))
         dispatch(actions.buildGraphStart())
-        walkXMl(doc, depth, graph.addNode)
+        walkXMl(doc, null, newGraph.addNode)
       })
       .then(() => {
-        dispatch(actions.buildGraphSuccess(graph))
+        dispatch(actions.buildGraphSuccess(newGraph))
       })
   }
 
@@ -91,22 +97,34 @@ class MainPage extends Component {
   render() {
     const { graph } = this.props
     return (
-      <>
-        {/* <Menu /> */}
-        <input
-          type='file'
-          onChange={this.onFileLoad}
-          ref={(node) => (this.fileInput = node)}
-        />
-        <button type='button' onClick={this.onReset}>
-          Сброс
-        </button>
-        <DepthFilter graph={graph} />
-        <NodesSettings />
+      <Flex>
+        <Menu width='20rem'>
+          <MenuItem>
+            <input
+              type='file'
+              onChange={this.onFileLoad}
+              ref={(node) => (this.fileInput = node)}
+            />
+          </MenuItem>
+          <MenuItem>
+            <button type='button' onClick={this.onReset}>
+              Сброс
+            </button>
+          </MenuItem>
+          <MenuItem>
+            <DepthFilter graph={graph} />
+          </MenuItem>
+          <MenuItem>
+            <NodesSettings />
+          </MenuItem>
+          <MenuItem>
+            <button onClick={() => graph.network.storePositions()}>store positions</button>
+          </MenuItem>
+        </Menu>
         <GraphWrapper>
           <GraphRender graph={graph} options={options} events={events} />
         </GraphWrapper>
-      </>
+      </Flex>
     )
   }
 }

@@ -1,9 +1,9 @@
 import vis from 'visjs-network'
 
-export const Graph = () => {
+export const Graph = (props = { depth: 20 }) => {
   let nodes = new vis.DataSet([])
   let edges = new vis.DataSet([])
-  let depth = 20
+  let depth = props.depth
   let edgesFilter = (item) => true
   let nodesFilter = (item) => item.level <= depth
   let nodesView = new vis.DataView(nodes, {
@@ -18,7 +18,13 @@ export const Graph = () => {
       from: node.parentNode.id,
       to: node.id,
     }
-    nodes.add([{ id: node.id, label: node.nodeName, level: node.level }])
+    nodes.add([
+      {
+        id: node.id,
+        label: node.nodeName,
+        level: node.level,
+      },
+    ])
     if (parentEdge) {
       edges.add([parentEdge])
     }
