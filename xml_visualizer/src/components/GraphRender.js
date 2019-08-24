@@ -6,8 +6,8 @@ export const GraphRender = ({ graph, options, events }) => {
   const container = useRef(null)
   useEffect(() => {
     const data = {
-      nodes: graph.getNodes(),
-      edges: graph.getEdges()
+      nodes: graph.nodes,
+      edges: graph.edges
     }
     graph.network = new vis.Network(container.current, data, options)
     Object.keys(events).forEach(event => {

@@ -20,7 +20,7 @@ function bfs(node, maxLevel, nodeCallback) {
 
   while (node) {
     nodeCallback(node)
-    if (node.level < maxLevel) {
+    if (!maxLevel || node.level < maxLevel) {
       ;[...node.children].forEach(child => {
         child.level = node.level + 1
         child.id = uuid()
@@ -32,6 +32,6 @@ function bfs(node, maxLevel, nodeCallback) {
   return Promise.resolve()
 }
 
-export function walkXMl(doc, maxLevel = 10, nodeCallback) {
+export function walkXMl(doc, maxLevel, nodeCallback) {
   bfs(doc, maxLevel, nodeCallback)
 }
