@@ -5,27 +5,30 @@ export const Graph = () => {
   let edges = new vis.DataSet([])
   let depth = 20
   let edgesFilter = (item) => true
-  let nodesFilter = (item) => item.level <=depth
+  let nodesFilter = (item) => item.level <= depth
   let nodesView = new vis.DataView(nodes, {
-    filter: nodesFilter
+    filter: nodesFilter,
   })
   let edgesView = new vis.DataView(edges, {
-    filter: edgesFilter
+    filter: edgesFilter,
   })
   let network = null
   function addNode(node) {
-    const parentEdge = node.parentNode && { from: node.parentNode.id, to: node.id }
+    const parentEdge = node.parentNode && {
+      from: node.parentNode.id,
+      to: node.id,
+    }
     nodes.add([{ id: node.id, label: node.nodeName, level: node.level }])
     if (parentEdge) {
       edges.add([parentEdge])
     }
   }
-  function groupNodes({filter = () => true, groupName}) {
+  function groupNodes({ filter = () => true, groupName }) {
     const addGroup = (node) => {
-      const name = (typeof groupName === "function") ? groupName(node) : groupName
-      return {...node, group: name}
+      const name = typeof groupName === 'function' ? groupName(node) : groupName
+      return { ...node, group: name }
     }
-    const affectedNodes = nodes.get({filter}).map(addGroup)
+    const affectedNodes = nodes.get({ filter }).map(addGroup)
     nodes.update(affectedNodes)
   }
   function cleanUp() {
@@ -54,6 +57,6 @@ export const Graph = () => {
     set depth(value) {
       depth = value
       nodesView.refresh()
-    }
+    },
   }
 }

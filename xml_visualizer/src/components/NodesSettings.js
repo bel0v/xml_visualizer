@@ -36,8 +36,10 @@ export const NodesSettings = connect((state) => ({
   }
   return (
     <div>
-      <select onChange={onSelect}>
-        <option value="" selected disabled hidden>Окрасить граф</option>
+      <select onChange={onSelect} defaultValue=''>
+        <option value='' disabled hidden>
+          Окрасить граф
+        </option>
         <option value='level'>Окраска по глубине</option>
         <option value='label'>Окраска по типу узла</option>
       </select>

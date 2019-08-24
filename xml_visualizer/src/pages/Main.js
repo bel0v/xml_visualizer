@@ -14,6 +14,10 @@ const options = {
     smooth: {
       type: 'continuous',
     },
+    arrows: 'to',
+  },
+  interaction: {
+    hideEdgesOnDrag: true,
   },
 }
 
