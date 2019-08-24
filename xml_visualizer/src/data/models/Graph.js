@@ -20,8 +20,13 @@ export const Graph = () => {
       edges.add([parentEdge])
     }
   }
+  function cleanUp() {
+    nodes.clear()
+    edges.clear()
+  }
   return {
     addNode,
+    cleanUp,
     get network() {
       return network
     },

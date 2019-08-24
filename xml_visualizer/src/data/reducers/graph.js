@@ -6,6 +6,7 @@ export default (state = Graph(), action) => {
     case types.BUILD_GRAPH_SUCCESS:
       return action.payload
     case types.RESET_GRAPH:
+      state.cleanUp()
       return Graph()
     default:
       return state
