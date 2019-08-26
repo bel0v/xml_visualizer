@@ -2,7 +2,7 @@ import React from 'react'
 import { MainPage } from 'pages'
 import { createGlobalStyle } from 'styled-components'
 import { Provider } from 'react-redux'
-import { configureStore } from 'data/store'
+import { store } from 'data/store'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -26,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   return (
-    <Provider store={configureStore()}>
+    <Provider store={store}>
       <GlobalStyle />
       <MainPage />
     </Provider>
