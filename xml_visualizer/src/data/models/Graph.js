@@ -23,6 +23,8 @@ export const Graph = (props = { depth: 20 }) => {
         id: node.id,
         label: node.nodeName,
         level: node.level,
+        // y: node.level * 100,
+        // x: randomFromMinusToPlus(200),
       },
     ])
     if (parentEdge) {
