@@ -1,9 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { Box } from '@rebass/grid'
+import { Box, Flex } from '@rebass/grid'
+import * as actions from 'data/actions'
 
-const Child = styled(Box)`
+const Child = styled(Flex)`
+  align-items: center;
+  justify-content: space-between;
   border: 1px solid;
   margin-bottom: 0.25rem;
   &:hover {
@@ -21,7 +24,7 @@ const getCommonEdges = (node1, node2, network) => {
   return edges1.filter((value) => edges2.includes(value))
 }
 
-const NodeViewer = ({ node, graph }) => {
+const NodeViewer = ({ node, graph, dispatch }) => {
   const { element } = node
   if (!element) {
     return null
@@ -46,6 +49,16 @@ const NodeViewer = ({ node, graph }) => {
         }}
       >
         {childNode.nodeName}
+        <div>
+          <button
+            onClick={() => {
+              graph.network.selectNodes([childNode.id], true)
+              dispatch(actions.selectNode(childNode.id))
+            }}
+          >
+            Выбрать
+          </button>
+        </div>
       </Child>
     )
   }
@@ -61,11 +74,16 @@ const NodeViewer = ({ node, graph }) => {
       <Box>
         <b>Глубина:</b> {element.level}
       </Box>
+      <H4>Outer HTML:</H4>
+      <textarea key={element.id} rows={4} defaultValue={element.outerHTML} style={{width: '100%'}}></textarea>
+      <H4>Родитель:</H4>
+      {renderChild(element.parentNode)}
       <H4>Связанные элементы:</H4>
       {element.children.length === 0 &&
         element.childNodes.length !== 0 &&
         `"${element.childNodes[0].nodeValue}"`}
       {[...element.children].map(renderChild)}
+
     </Box>
   )
 }
