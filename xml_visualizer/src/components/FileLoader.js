@@ -10,16 +10,18 @@ const onFileLoad = (dispatch, graph) => (e) => {
 
   const newGraph = GraphModel({ depth: graph.depth })
   loadFile(e)
-    .then((doc) => {
-      dispatch(actions.loadFileSuccess(doc))
+    .then((result) => {
+      dispatch(actions.loadFileSuccess(result))
       dispatch(actions.buildGraphStart())
-      walkXMl(doc, null, newGraph.addNode)
+      walkXMl(result.doc, null, newGraph.addNode)
     })
     .then(() => {
       dispatch(actions.buildGraphSuccess(newGraph))
     })
 }
 
-export const FileLoader = connect()(({ dispatch, graph }) => {
-  return <input type='file' onChange={onFileLoad(dispatch, graph)} />
+export const FileLoader = connect((state) => ({ graph: state.graph.model }))(({ dispatch, graph }) => {
+  return <input type='file' onChange={onFileLoad(dispatch, graph)} onClick={(e) => {
+    e.target.value = ''
+  }}/>
 })

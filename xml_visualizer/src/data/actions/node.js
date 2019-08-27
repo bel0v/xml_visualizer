@@ -3,7 +3,7 @@ import { store } from '../store'
 
 export const selectNode = (id) => (dispatch) => {
   const { file } = store.getState()
-  const element = file.result.getElementById(id)
+  const element = file.doc.getElementById(id)
   dispatch({
     type: types.NODE_SELECT,
     payload: {id, element},

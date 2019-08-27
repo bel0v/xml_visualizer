@@ -3,12 +3,14 @@ import * as types from '../actions/constants'
 export default (state = {}, action) => {
   switch (action.type) {
     case types.LOAD_FILE_SUCCESS:
+      const { doc, ...attrs} = action.payload
       return {
-        result: action.payload
+        doc,
+        attrs,
       }
     case types.LOAD_FILE_FAILURE:
       return {
-        result: action.payload
+        doc: action.payload
       }
     case types.RESET_FILE:
       return {}

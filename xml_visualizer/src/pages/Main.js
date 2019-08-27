@@ -4,6 +4,7 @@ import {
   GraphRender,
   NodesSettings,
   FileLoader,
+  FileSaver,
   DepthFilter,
   ChosenNodeViewer
 } from 'components'
@@ -38,16 +39,19 @@ const MenuItem = styled(Box)`
 class MainPage extends Component {
   onReset = () => {
     this.props.dispatch(actions.resetAll())
-    // this.fileInput.value = ''
   }
 
   render() {
-    const { graph } = this.props
+    const { graph, file } = this.props
+    console.log(file)
     return (
       <Flex>
         <Menu width='20rem'>
           <MenuItem>
-            <FileLoader graph={graph} />
+            <FileLoader />
+          </MenuItem>
+          <MenuItem>
+            <FileSaver />
           </MenuItem>
           <MenuItem>
             <button type='button' onClick={this.onReset}>
