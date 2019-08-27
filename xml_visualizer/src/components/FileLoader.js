@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as actions from 'data/actions'
 import { Graph as GraphModel } from 'data/models/Graph'
 import { loadFile, walkXMl } from 'utils'
@@ -20,8 +20,10 @@ const onFileLoad = (dispatch, graph) => (e) => {
     })
 }
 
-export const FileLoader = connect((state) => ({ graph: state.graph.model }))(({ dispatch, graph }) => {
+export const FileLoader = () => {
+  const graph = useSelector(state =>  state.graph.model)
+  const dispatch = useDispatch()
   return <input type='file' onChange={onFileLoad(dispatch, graph)} onClick={(e) => {
     e.target.value = ''
   }}/>
-})
+}

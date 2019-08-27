@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
   Menu,
   GraphRender,
@@ -6,11 +6,11 @@ import {
   FileLoader,
   FileSaver,
   DepthFilter,
-  ChosenNodeViewer
+  ChosenNodeViewer,
 } from 'components'
 import { Box, Flex } from '@rebass/grid'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as actions from 'data/actions'
 
 const options = {
@@ -36,51 +36,45 @@ const MenuItem = styled(Box)`
   margin-bottom: 1rem;
 `
 
-class MainPage extends Component {
-  onReset = () => {
-    this.props.dispatch(actions.resetAll())
+export const MainPage = () => {
+  const graph = useSelector((state) => state.graph.model)
+  const dispatch = useDispatch()
+
+  const onReset = () => {
+    dispatch(actions.resetAll())
   }
 
-  render() {
-    const { graph, file } = this.props
-    console.log(file)
-    return (
-      <Flex>
-        <Menu width='20rem'>
-          <MenuItem>
-            <FileLoader />
-          </MenuItem>
-          <MenuItem>
-            <FileSaver />
-          </MenuItem>
-          <MenuItem>
-            <button type='button' onClick={this.onReset}>
-              Сброс
-            </button>
-          </MenuItem>
-          <MenuItem>
-            <DepthFilter graph={graph} />
-          </MenuItem>
-          <MenuItem>
-            <NodesSettings />
-          </MenuItem>
-          <MenuItem>
-            <button onClick={() => graph.network.storePositions()}>
-              store positions
-            </button>
-          </MenuItem>
-          <hr />
-          <ChosenNodeViewer />
-        </Menu>
-        <GraphWrapper>
-          <GraphRender graph={graph} options={options} />
-        </GraphWrapper>
-      </Flex>
-    )
-  }
+  return (
+    <Flex>
+      <Menu width='20rem'>
+        <MenuItem>
+          <FileLoader />
+        </MenuItem>
+        <MenuItem>
+          <FileSaver />
+        </MenuItem>
+        <MenuItem>
+          <button type='button' onClick={onReset}>
+            Сброс
+          </button>
+        </MenuItem>
+        <MenuItem>
+          <DepthFilter graph={graph} />
+        </MenuItem>
+        <MenuItem>
+          <NodesSettings />
+        </MenuItem>
+        <MenuItem>
+          <button onClick={() => graph.network.storePositions()}>
+            store positions
+          </button>
+        </MenuItem>
+        <hr />
+        <ChosenNodeViewer />
+      </Menu>
+      <GraphWrapper>
+        <GraphRender options={options} />
+      </GraphWrapper>
+    </Flex>
+  )
 }
-
-const ConnectedMainPage = connect((state) => ({ graph: state.graph.model }))(
-  MainPage
-)
-export { ConnectedMainPage as MainPage }

@@ -1,11 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { colorScale } from 'utils'
 
-export const NodesSettings = connect((state) => ({
-  graph: state.graph.model,
-  isGraphBuilt: state.graph.isBuilt,
-}))(({ graph, isGraphBuilt }) => {
+export const NodesSettings = () => {
+  const graph = useSelector(state =>  state.graph.model)
+  const isGraphBuilt = useSelector(state =>  state.graph.isBuilt)
   if (!isGraphBuilt) {
     return null
   }
@@ -45,4 +44,4 @@ export const NodesSettings = connect((state) => ({
       </select>
     </div>
   )
-})
+}

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import vis from 'vis-network'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as actions from 'data/actions'
 
 
@@ -13,7 +13,10 @@ const onClick = (dispatch) => ({ nodes, edges }) => {
 }
 
 
-export const GraphRender = connect()(({ graph, options, dispatch }) => {
+export const GraphRender = ({ options }) => {
+  const graph = useSelector(state =>  state.graph.model)
+  const dispatch = useDispatch()
+
   const events = {
     click: onClick(dispatch)
   }
@@ -30,4 +33,4 @@ export const GraphRender = connect()(({ graph, options, dispatch }) => {
     })
   })
   return <div ref={container} style={{ height: '100%' }} />
-})
+}
