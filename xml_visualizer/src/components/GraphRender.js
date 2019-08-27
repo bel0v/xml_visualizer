@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import vis from 'visjs-network'
+import vis from 'vis-network'
 import { connect } from 'react-redux'
 import * as actions from 'data/actions'
 

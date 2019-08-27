@@ -1,4 +1,4 @@
-import vis from 'visjs-network'
+import vis from 'vis-network'
 
 export const Graph = (props = { depth: 20 }) => {
   let nodes = new vis.DataSet([])
