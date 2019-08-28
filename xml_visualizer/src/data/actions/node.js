@@ -3,7 +3,7 @@ import { store } from '../store'
 
 export const selectNode = (id) => (dispatch) => {
   const { file } = store.getState()
-  const element = file.doc.getElementById(id)
+  const element = file.doc.querySelectorAll(`[__graph_id="${id}"]`)[0]
   dispatch({
     type: types.NODE_SELECT,
     payload: {id, element},

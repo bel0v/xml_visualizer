@@ -15,12 +15,12 @@ export const Graph = (props = { depth: 20 }) => {
   let network = null
   function addNode(node) {
     const parentEdge = node.parentNode && {
-      from: node.parentNode.id,
-      to: node.id,
+      from: node.parentNode.__graph_id,
+      to: node.__graph_id,
     }
     nodes.add([
       {
-        id: node.id,
+        id: node.__graph_id,
         label: node.nodeName,
         level: node.level,
         // y: node.level * 100,

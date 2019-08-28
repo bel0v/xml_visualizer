@@ -19,15 +19,15 @@ const H4 = styled('h4')`
   margin-bottom: 0.5rem;
 `
 const getCommonEdges = (node1, node2, network) => {
-  const edges1 = network.getConnectedEdges(node1.id)
-  const edges2 = network.getConnectedEdges(node2.id)
+  const edges1 = network.getConnectedEdges(node1.__graph_id)
+  const edges2 = network.getConnectedEdges(node2.__graph_id)
   return edges1.filter((value) => edges2.includes(value))
 }
 
 const NodeItem = (props) => {
   const dispatch = useDispatch()
   const graph = useSelector((state) => state.graph.model)
-  const selectedNode = useSelector((state) => state.node)
+  const selectedNode = useSelector((state) => state.node.element)
 
   const { nodeItem } = props
   if (!nodeItem) {
@@ -40,21 +40,21 @@ const NodeItem = (props) => {
         graph.network.setSelection(
           {
             edges: getCommonEdges(selectedNode, nodeItem, graph.network),
-            nodes: [nodeItem.id, selectedNode.id],
+            nodes: [nodeItem.__graph_id, selectedNode.__graph_id],
           },
           { unselectAll: true, highlightEdges: false }
         )
       }}
       onMouseOut={() => {
-        graph.network.selectNodes([selectedNode.id], false)
+        graph.network.selectNodes([selectedNode.__graph_id], false)
       }}
     >
       {nodeItem.nodeName}
       <div>
         <button
           onClick={() => {
-            graph.network.selectNodes([nodeItem.id], true)
-            dispatch(actions.selectNode(nodeItem.id))
+            graph.network.selectNodes([nodeItem.__graph_id], true)
+            dispatch(actions.selectNode(nodeItem.__graph_id))
           }}
         >
           Выбрать
@@ -92,7 +92,7 @@ export const ChosenNodeViewer = () => {
     }
     dispatch(actions.patchFile(newEl))
     dispatch(actions.patchGraph(newEl))
-    dispatch(actions.selectNode(element.id))
+    dispatch(actions.selectNode(element.__graph_id))
     setEditedValue(null)
   }
 
@@ -103,14 +103,14 @@ export const ChosenNodeViewer = () => {
         <b>Имя:</b> {`<${element.nodeName}>`}
       </Box>
       <Box>
-        <b>ID:</b> {element.id}
+        <b>внутренний ID:</b> {element.__graph_id}
       </Box>
       <Box>
         <b>Глубина:</b> {element.level}
       </Box>
       <H4>Outer HTML:</H4>
       <textarea
-        key={element.id}
+        key={element.__graph_id}
         rows={4}
         spellCheck={false}
         defaultValue={element.outerHTML}

@@ -15,14 +15,21 @@ import uuid from 'uuid/v4'
 function bfs(node, maxLevel, nodeCallback) {
   const queue = []
   node.level = node.level || 1
-  node.id = node.id || uuid()
-
+  const id = node.__graph_id || uuid()
+  node.__graph_id = id
+  if (node.setAttribute) {
+    node.setAttribute('__graph_id', id)
+  }
   while (node) {
     nodeCallback(node)
     if (!maxLevel || node.level < maxLevel) {
       ;[...node.children].forEach(child => {
         child.level = node.level + 1
-        child.id = uuid()
+        const childId = child.__graph_id || uuid()
+        child.__graph_id = childId
+        if (child.setAttribute) {
+          child.setAttribute('__graph_id', childId)
+        }
         queue.push(child)
       })
     }
