@@ -14,8 +14,8 @@ import uuid from 'uuid/v4'
 
 function bfs(node, maxLevel, nodeCallback) {
   const queue = []
-  node.level = 1
-  node.id = uuid()
+  node.level = node.level || 1
+  node.id = node.id || uuid()
 
   while (node) {
     nodeCallback(node)

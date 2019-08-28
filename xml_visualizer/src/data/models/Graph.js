@@ -39,12 +39,18 @@ export const Graph = (props = { depth: 20 }) => {
     const affectedNodes = nodes.get({ filter }).map(addGroup)
     nodes.update(affectedNodes)
   }
+  function removeSubtree(id) {
+    const childNodes = network.getConnectedNodes(id, 'to')
+    childNodes.forEach(removeSubtree)
+    nodes.remove(id)
+  }
   function cleanUp() {
     nodes.clear()
     edges.clear()
   }
   return {
     addNode,
+    removeSubtree,
     cleanUp,
     groupNodes,
     get network() {

@@ -12,6 +12,9 @@ export const buildGraphSuccess = result => dispatch => {
   })
 }
 
-export const changeGraphElement = (element) => dispatch => {
-  console.log('change element in graph...')
+export const patchGraph = (element) => dispatch => {
+  dispatch({
+    type: types.GRAPH_PATCH,
+    payload: element
+  })
 }

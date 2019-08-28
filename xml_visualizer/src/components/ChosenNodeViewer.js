@@ -91,6 +91,7 @@ export const ChosenNodeViewer = () => {
       return
     }
     dispatch(actions.patchFile(newEl))
+    dispatch(actions.patchGraph(newEl))
     setEditedValue(null)
   }
 
