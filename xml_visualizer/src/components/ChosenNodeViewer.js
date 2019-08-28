@@ -85,8 +85,9 @@ export const ChosenNodeViewer = () => {
     try {
       const wrapper = doc.createElement('X');
       wrapper.innerHTML = editedValue
-      newEl = wrapper.firstChild;
+      newEl = [...wrapper.children][0];
     } catch(e) {
+      console.log(e)
       setSyntaxError(true)
       return
     }
