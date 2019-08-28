@@ -30,6 +30,9 @@ const NodeItem = (props) => {
   const selectedNode = useSelector((state) => state.node)
 
   const { nodeItem } = props
+  if (!nodeItem) {
+    return null
+  }
   return (
     <NodeCard
       p='0.25rem'
@@ -62,24 +65,34 @@ const NodeItem = (props) => {
 }
 
 export const ChosenNodeViewer = () => {
-  const node = useSelector((state) => state.node)
+  const element = useSelector((state) => state.node.element)
+  const doc = useSelector((state) => state.file.doc)
+  const dispatch = useDispatch()
   const [editedValue, setEditedValue] = useState(null)
-  const { element } = node
+  const [syntaxError, setSyntaxError] = useState(false)
   if (!element) {
     return null
   }
+  const hasTextNodes = element.children.length < element.childNodes.length
+  const hasChildNodes = element.children.length > 0
+
   const onEdit = (e) => {
+    setSyntaxError(false)
     setEditedValue(e.target.value)
   }
   const saveChanges = () => {
-    console.log('saving...', editedValue)
+    let newEl = null
+    try {
+      const wrapper = doc.createElement('X');
+      wrapper.innerHTML = editedValue
+      newEl = wrapper.firstChild;
+    } catch(e) {
+      setSyntaxError(true)
+      return
+    }
+    dispatch(actions.patchFile(newEl))
+    setEditedValue(null)
   }
-  const hasTextNodes = element.children.length < element.childNodes.length
-  const hasChildNodes = element.children.length > 0
-  const defaultValue =
-    hasChildNodes
-      ? element.outerHTML.replace(element.innerHTML || '', '...')
-      : element.outerHTML
 
   return (
     <Box>
@@ -97,17 +110,24 @@ export const ChosenNodeViewer = () => {
       <textarea
         key={element.id}
         rows={4}
-        defaultValue={defaultValue}
-        style={{ width: '100%' }}
+        spellCheck={false}
+        defaultValue={element.outerHTML}
+        style={{ width: '100%', borderColor: syntaxError && 'red' }}
         onChange={onEdit}
       ></textarea>
+      {syntaxError && (
+        <Box color='red' fontSize='.75rem'>
+          Введён не валидный XML
+        </Box>
+      )}
       {editedValue && (
         <button onClick={saveChanges}>Сохранить изменения</button>
       )}
       <H4>Родитель:</H4>
       <NodeItem nodeItem={element.parentNode} />
       <H4>Связанные элементы:</H4>
-      {hasTextNodes && !hasChildNodes &&
+      {hasTextNodes &&
+        !hasChildNodes &&
         [...element.childNodes].map((textNode, i) => (
           <div key={i}>{`"${textNode.nodeValue}"`}</div>
         ))}

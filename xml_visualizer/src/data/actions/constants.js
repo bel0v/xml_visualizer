@@ -4,6 +4,7 @@ export const LOAD_FILE_START = `${LOAD_FILE}/START`
 export const LOAD_FILE_SUCCESS = `${LOAD_FILE}/SUCCESS`
 export const LOAD_FILE_FAILURE = `${LOAD_FILE}/FAILURE`
 export const RESET_FILE = `${FILE}/RESET`
+export const FILE_PATCH = `${FILE}/PATCH`
 
 const GRAPH = 'GRAPH'
 const BUILD_GRAPH = `${GRAPH}/BUILD`

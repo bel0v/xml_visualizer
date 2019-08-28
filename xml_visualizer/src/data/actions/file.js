@@ -17,3 +17,9 @@ export const loadFileFailure = error => dispatch => {
     payload: { error }
   })
 }
+export const patchFile = (element) => dispatch => {
+  dispatch({
+    type: types.FILE_PATCH,
+    payload: element
+  })
+}

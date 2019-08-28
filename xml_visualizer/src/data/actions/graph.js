@@ -11,3 +11,7 @@ export const buildGraphSuccess = result => dispatch => {
     payload: result
   })
 }
+
+export const changeGraphElement = (element) => dispatch => {
+  console.log('change element in graph...')
+}
