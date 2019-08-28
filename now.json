@@ -2,10 +2,6 @@
   "name": "xml_visualizer",
   "version": 2,
   "alias": ["lab.belov.codes"],
-  "builds": [
-    { "src": "*.html", "use": "@now/static" },
-    { "src": "*.js", "use": "@now/static" }
-  ],
   "public": false,
   "github": {
     "enabled": true,
