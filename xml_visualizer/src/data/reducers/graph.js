@@ -19,10 +19,11 @@ export default (state = defaultState, action) => {
       return defaultState
     case types.GRAPH_PATCH:
       const newElement = action.payload
-      const node = state.model.nodes.get(newElement.id)
+      const id = newElement.getAttribute('__graph_id')
+      const node = state.model.nodes.get(id)
       newElement.level = node.level
       // remove old subtree
-      state.model.removeSubtree(newElement.id)
+      state.model.removeSubtree(id)
       // add new subtree
       walkXMl(newElement, null, state.model.addNode)
       return state

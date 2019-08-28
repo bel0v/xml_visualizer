@@ -16,7 +16,8 @@ export default (state = {}, action) => {
       return {}
     case types.FILE_PATCH:
       const newElement = action.payload
-      const oldElement = state.doc.getElementById(newElement.id)
+      const id = newElement.getAttribute('__graph_id')
+      const oldElement = state.doc.querySelectorAll(`[__graph_id="${id}"]`)[0]
       oldElement.parentNode.replaceChild(newElement, oldElement)
       return state
     default:
