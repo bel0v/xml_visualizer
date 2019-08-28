@@ -1,0 +1,14 @@
+{
+  "name": "xml_visualizer",
+  "version": 2,
+  "alias": ["belov.codes/lab/graph"],
+  "builds": [
+    { "src": "*.html", "use": "@now/static" },
+    { "src": "*.js", "use": "@now/static" }
+  ],
+  "public": false,
+  "github": {
+    "enabled": true,
+    "autoAlias": true
+  }
+}
